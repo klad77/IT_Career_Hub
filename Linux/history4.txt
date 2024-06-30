@@ -1,0 +1,9 @@
+   0 date > /tmp/new.txt
+   1 df -h / >> /tmp/new.txt
+   2 history | tail -3 >> /tmp/new.txt
+   3 cat /etc/passwd | grep cron >> /tmp/new.txt
+   4 cat /etc/group | grep root | wc -l
+   5 cat /etc/group | grep root | wc -l >> /tmp/new.txt
+   6 vi /tmp/new.txt
+   7 export_file /tmp/new.txt
+   8 history >> /tmp/history4.txt

@@ -1,0 +1,72 @@
+DD-16 Оконные функции
+
+select *,
+SUM(AMT) OVER(PARTITION BY month(odate)) as total_amt,
+round(AMT/SUM(AMT) OVER(PARTITION BY month(odate)) * 100, 2) as percent
+from ORDERS;
+
+-- Вывести топ-2 продавцов с самой высокой средней суммой заказа. 
+
+SELECT  DISTINCT SELL_ID, 
+AVG(AMT) OVER(PARTITION BY SELL_ID) as avg_
+from ORDERS
+ORDER BY avg_ desc
+LIMIT 2;
+
+
+SELECT   DISTINCT SELLERS.SELL_ID,   SNAME,
+
+  AVG(AMT) OVER (PARTITION BY SELLERS.SELL_ID) AS AVG_ORDER_AMOUNT
+  
+FROM SELLERS
+LEFT JOIN ORDERS 
+ON ORDERS.SELL_ID = SELLERS.SELL_ID
+ORDER BY AVG_ORDER_AMOUNT DESC
+LIMIT 2;
+
+SELECT SELL_ID,
+  ORDER_ID, 
+  ODATE,
+  AMT,
+  SUM(AMT) OVER (PARTITION BY SELL_ID ORDER BY  ODATE) AS running_total_desc
+FROM ORDERS
+;
+
+use hr;
+select * from employees;
+
+SELECT first_name, salary, department_id, manager_id,
+avg(salary) over(partition by department_id order by manager_id) as avg_
+from employees;
+
+-- Получить информацию о зарплате сотрудников, а также рассчитать кумулятивную и 
+-- относительную кумулятивную сумму зарплаты для каждого сотрудника в пределах своего департамента.
+
+
+Select employee_id, first_name, salary, department_id,
+sum(salary) over(partition by department_id order by employee_id) as kum_in_group,
+sum(salary) over(order by employee_id) total_kum_sum
+from employees;
+
+-------------------------------------------------------------------------------------------------------------
+
+Data and Databases: домашние задание 11 morning (Python)
+
+
+Подключиться к базе данных hr
+
+Вывести список region_id, total_countries, где total_countries - количество стран в таблице. Подсказка: работаем с таблицей countries, использовать оконную функцию over() и суммировать count(country_id).
+
+Изменить запрос 2 таким образом, чтобы для каждого region_id выводилось количество стран в этом регионе. Подсказка: добавить partition by region_id в over().
+
+Работа с таблицей departments. Написать запрос, который выводит location_id, department_name, dept_total, где dept_total - количество департаментов в location_id.
+
+Изменить запрос 3 таким образом, чтобы выводились названия городов соответствующих location_id. 
+
+Работа с таблицей employees. Вывести manager_id, last_name, total_manager_salary, где total_manager_salary - общая зарплата подчиненных каждого менеджера (manager_id). 
+
+
+
+
+
+

@@ -1,0 +1,52 @@
+hw-08  DD-11  pdf 8-1 , 8-2
+
+Data and Databases: домашние задание 8 morning(Python)
+
+-- 1. Подключитесь к базе данных Students. 
+
+use students;
+
+-- 2. Найдите самого старшего студента.
+
+-- select name, age
+-- from Students
+-- where age = (
+-- select max(age)
+-- from Students)
+-- ;
+
+-- 3. Найдите самого старшего преподавателя.
+
+-- select name, age
+-- from Teachers
+-- where age = (
+-- select max(age)
+-- from Teachers)
+-- ;
+
+-- 4. Выведите список преподавателей с количеством компетенций у каждого.
+
+-- select t1.name, count(t2.competencies_id) as comp_cnt
+-- from Teachers t1
+-- left join Teachers2Competencies t2
+-- on t1.id = t2.teacher_id
+-- group by t1.name
+-- ;
+
+-- 5. Выведите список курсов с количеством студентов в каждом.
+
+-- select t1.title, count(t2.student_id) as stud_cnt
+-- from Courses t1
+-- left join Students2Courses t2
+-- on t1.id = t2.course_id
+-- group by t1.title
+-- ; 
+
+-- 6. Выведите список студентов, с количеством курсов, посещаемых каждым студентом. 
+
+-- select t1.name, count(t2.course_id) as course_cnt
+-- from Students t1
+-- left join Students2Courses t2
+-- on t1.id = t2.student_id
+-- group by t1.name
+-- ; 
