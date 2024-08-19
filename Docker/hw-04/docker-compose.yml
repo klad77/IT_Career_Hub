@@ -1,0 +1,42 @@
+version: '3.8' # версия файла Docker Compose
+
+services:
+  # Сервис Nginx
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    networks:
+      - mynetwork # Соединяет этот сервис с сетью mynetwork.
+    depends_on:  # порядок запуска контейнеров, Сначала будут запущены Redis и MySQL, затем Nginx.
+      - redis
+      - mysql
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Опционально, для кастомизации Nginx
+
+  # Сервис Redis
+  redis:
+    image: redis:latest
+    networks:
+      - mynetwork # Соединяет этот сервис с сетью mynetwork.
+
+  # Сервис MySQL
+  mysql:
+    image: mysql:8.0
+    environment: # Переменные окружения для настройки MySQL
+      MYSQL_ROOT_PASSWORD: examplepassword
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+    volumes:
+      - mysql_data:/var/lib/mysql # Монтирует volume mysql_data в директорию /var/lib/mysql внутри контейнера для хранения данных MySQL.
+    networks:
+      - mynetwork # Соединяет этот сервис с сетью mynetwork.
+
+# Определение volume для хранения данных MySQL
+volumes:
+  mysql_data: # для постоянного хранения данных базы данных MySQL.
+
+# Определение сети, которая соединяет все контейнеры
+networks:
+  mynetwork: 
